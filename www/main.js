@@ -4,9 +4,20 @@
 var exec = require('cordova/exec');
 
 // ----------------------------------------------------------------------------
-// |  Exports
+// |  Public interface
 // ----------------------------------------------------------------------------
 exports.getDefaultSettings = function() {
+  return getDefaultSettings();
+};
+
+exports.startScanning = function (p_OnSuccess, p_OnError, p_Settings) {
+  startScanning(p_OnSuccess, p_OnError, p_Settings);
+};
+
+// ----------------------------------------------------------------------------
+// |  Functions
+// ----------------------------------------------------------------------------
+function getDefaultSettings() {
   var settings = {
     barcodeTypes: {
       Aztec     : true,
@@ -30,11 +41,7 @@ exports.getDefaultSettings = function() {
   }; 
 
   return settings;
-};
-
-exports.scan = function (p_OnSuccess, p_OnError, p_Settings) {
-  startScanning(p_OnSuccess, p_OnError, p_Settings);
-};
+}
 
 function startScanning(p_OnSuccess, p_OnError, p_Settings) {
   if (!p_Settings) {
