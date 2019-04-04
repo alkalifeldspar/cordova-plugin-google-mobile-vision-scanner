@@ -38,7 +38,8 @@ exports.scan = function (p_OnSuccess, p_OnError, p_Settings) {
 
 function startScanning(p_OnSuccess, p_OnError, p_Settings) {
   if (!p_Settings) {
-    throw "p_Settings can't be undefined. Use getDefaultSettings() to get a new settings object";
+    p_OnError("p_Settings can't be undefined. Use getDefaultSettings() to get a new settings object");
+    return;
   }
 
   var enabledDetectorTypes = 0; //The type of detectors which are neabled are represented by an integer;
