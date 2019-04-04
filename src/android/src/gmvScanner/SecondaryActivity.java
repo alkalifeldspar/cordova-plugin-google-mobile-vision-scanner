@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dealrinc.gmvScanner;
+package tl.cordova.google.mobile.vision.scanner;
 
 import android.content.Intent;
 import android.os.Bundle;

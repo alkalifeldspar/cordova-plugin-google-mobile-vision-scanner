@@ -1,4 +1,4 @@
-package com.dealrinc.gmvScanner;
+package tl.cordova.google.mobile.vision.scanner;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;

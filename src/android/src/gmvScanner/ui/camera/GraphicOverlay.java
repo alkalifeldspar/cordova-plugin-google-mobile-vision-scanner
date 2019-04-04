@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dealrinc.gmvScanner.ui.camera;
+package tl.cordova.google.mobile.vision.scanner.ui.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;

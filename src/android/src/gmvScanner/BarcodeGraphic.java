@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dealrinc.gmvScanner;
+package tl.cordova.google.mobile.vision.scanner;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.dealrinc.gmvScanner.ui.camera.GraphicOverlay;
+import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.barcode.Barcode;
 
 /**

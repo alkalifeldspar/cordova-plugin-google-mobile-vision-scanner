@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-gmv-barcode-scanner" version="1.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+<plugin id="cordova-plugin-google-mobile-vision-barcode-scanner" version="1.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>cordova-gmv-barcode-scanner</name>
-    <js-module name="cordova-gmv-barcode-scanner" src="www/main.js">
-        <clobbers target="cordova.plugins.gmv-barcode-scanner"/>
+    <name>cordova-plugin-google-mobile-vision-barcode-scanner</name>
+    <js-module name="cordova-plugin-google-mobile-vision-barcode-scanner" src="www/main.js">
+        <clobbers target="cordova.plugins.scanner"/>
     </js-module>
         
     <engines>
@@ -13,7 +13,7 @@
     </engines>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="cordova-gmv-barcode-scanner">
+            <feature name="cordova-plugin-google-mobile-vision-barcode-scanner">
                 <param name="ios-package" value="CDViOSScanner"/>
             </feature>
         </config-file>
@@ -28,8 +28,8 @@
     </platform>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="cordova-gmv-barcode-scanner">
-                <param name="android-package" value="com.dealrinc.gmvScanner.CDVAndroidScanner"/>
+            <feature name="cordova-plugin-google-mobile-vision-barcode-scanner">
+                <param name="android-package" value="tl.cordova.google.mobile.vision.scanner.CDVAndroidScanner"/>
             </feature>
         </config-file>
 
@@ -44,8 +44,8 @@
                     android:name="com.google.android.gms.vision.DEPENDENCIES"
                     android:value="barcode" />
 
-            <activity android:label="@string/title_activity_main" android:name="com.dealrinc.gmvScanner.SecondaryActivity"/>
-            <activity android:label="Read Barcode" android:name="com.dealrinc.gmvScanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
+            <activity android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
+            <activity android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
         </config-file>
 
         <config-file parent="/*" target="AndroidManifest.xml">
@@ -59,8 +59,8 @@
                     android:name="com.google.android.gms.vision.DEPENDENCIES"
                     android:value="barcode" />
 
-            <activity android:label="@string/title_activity_main" android:name="com.dealrinc.gmvScanner.SecondaryActivity"/>
-            <activity android:label="Read Barcode" android:name="com.dealrinc.gmvScanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
+            <activity android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
+            <activity android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
         </config-file>
 
         <config-file target="res/values/strings.xml" parent="/*">
