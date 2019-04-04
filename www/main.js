@@ -11,7 +11,7 @@ exports.getDefaultSettings = function() {
 };
 
 exports.startScanning = function (p_OnSuccess, p_OnError, p_Settings) {
-  startScanning(p_OnSuccess, p_OnError, p_Settings);
+  return startScanning(p_OnSuccess, p_OnError, p_Settings);
 };
 
 // ----------------------------------------------------------------------------
