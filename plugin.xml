@@ -29,7 +29,7 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="cordova-plugin-google-mobile-vision-barcode-scanner">
-                <param name="android-package" value="tl.cordova.google.mobile.vision.scanner.CDVAndroidScanner"/>
+                <param name="android-package" value="tl.cordova.google.mobile.vision.scanner.AndroidScanner"/>
             </feature>
         </config-file>
 
@@ -86,7 +86,7 @@
                      target-dir="src/com/dealrinc/gmvScanner"/>
         <source-file src="src/android/src/gmvScanner/BarcodeTrackerFactory.java"
                      target-dir="src/com/dealrinc/gmvScanner"/>
-        <source-file src="src/android/src/gmvScanner/CDVAndroidScanner.java"
+        <source-file src="src/android/src/gmvScanner/AndroidScanner.java"
                      target-dir="src/com/dealrinc/gmvScanner"/>
         <source-file src="src/android/src/gmvScanner/SecondaryActivity.java"
                      target-dir="src/com/dealrinc/gmvScanner"/>
