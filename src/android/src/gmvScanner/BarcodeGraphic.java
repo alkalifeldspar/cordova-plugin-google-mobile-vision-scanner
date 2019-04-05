@@ -1,104 +1,102 @@
-/*
- * Copyright (C) The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package tl.cordova.google.mobile.vision.scanner;
 
+// ----------------------------------------------------------------------------
+// |  Android Imports
+// ----------------------------------------------------------------------------
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
+// ----------------------------------------------------------------------------
+// |  Google Imports
+// ----------------------------------------------------------------------------
 import com.google.android.gms.vision.barcode.Barcode;
 
-/**
- * Graphic instance for rendering barcode position, size, and ID within an associated graphic
- * overlay view.
- */
+// ----------------------------------------------------------------------------
+// |  Our Imports
+// ----------------------------------------------------------------------------
+import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
+
 public class BarcodeGraphic extends GraphicOverlay.Graphic {
+  // ----------------------------------------------------------------------------
+  // |  Public Properties
+  // ----------------------------------------------------------------------------
 
-    private int mId;
+  // ----------------------------------------------------------------------------
+  // |  Private Properties
+  // ---------------------------------------------------------------------------- 
+  private static final int COLOR_CHOICES[]     = { Color.BLUE, Color.CYAN, Color.GREEN };
+  private static       int CURRENT_COLOR_INDEX = 0                                      ;
+  
+  private          int     _Id       ;
+  private          Paint   _RectPaint;
+  private          Paint   _TextPaint;
+  private volatile Barcode _Barcode  ;
 
-    private static final int COLOR_CHOICES[] = {
-            Color.BLUE,
-            Color.CYAN,
-            Color.GREEN
-    };
 
-    private static int mCurrentColorIndex = 0;
+  BarcodeGraphic(GraphicOverlay overlay) {
+    super(overlay);
 
-    private Paint mRectPaint;
-    private Paint mTextPaint;
-    private volatile Barcode mBarcode;
+    CURRENT_COLOR_INDEX = (CURRENT_COLOR_INDEX + 1) % COLOR_CHOICES.length;
+    final int selectedColor = COLOR_CHOICES[CURRENT_COLOR_INDEX];
 
-    BarcodeGraphic(GraphicOverlay overlay) {
-        super(overlay);
+    _RectPaint = new Paint();
+    _RectPaint.setColor(selectedColor);
+    _RectPaint.setStyle(Paint.Style.STROKE);
+    _RectPaint.setStrokeWidth(4.0f);
 
-        mCurrentColorIndex = (mCurrentColorIndex + 1) % COLOR_CHOICES.length;
-        final int selectedColor = COLOR_CHOICES[mCurrentColorIndex];
+    _TextPaint = new Paint();
+    _TextPaint.setColor(selectedColor);
+    _TextPaint.setTextSize(36.0f);
+  }
 
-        mRectPaint = new Paint();
-        mRectPaint.setColor(selectedColor);
-        mRectPaint.setStyle(Paint.Style.STROKE);
-        mRectPaint.setStrokeWidth(4.0f);
+  // ----------------------------------------------------------------------------
+  // |  Public Functions
+  // ----------------------------------------------------------------------------
+  public int getId() {
+    return _Id;
+  }
 
-        mTextPaint = new Paint();
-        mTextPaint.setColor(selectedColor);
-        mTextPaint.setTextSize(36.0f);
+  public void setId(int id) {
+    this._Id = id;
+  }
+
+  public Barcode getBarcode() {
+    return _Barcode;
+  }
+
+  public void updateItem(Barcode barcode) {
+    _Barcode = barcode;
+    postInvalidate();
+  }
+
+  @Override
+  public void draw(Canvas canvas) {
+    Barcode barcode = _Barcode;
+    if (barcode == null) {
+      return;
     }
 
-    public int getId() {
-        return mId;
-    }
+    // Draws the bounding box around the barcode.
+    RectF rect = new RectF(barcode.getBoundingBox());
+    rect.left = translateX(rect.left);
+    rect.top = translateY(rect.top);
+    rect.right = translateX(rect.right);
+    rect.bottom = translateY(rect.bottom);
+    canvas.drawRect(rect, _RectPaint);
 
-    public void setId(int id) {
-        this.mId = id;
-    }
+    // Draws a label at the bottom of the barcode indicate the barcode value that
+    // was detected.
+    canvas.drawText(barcode.rawValue, rect.left, rect.bottom, _TextPaint);
+  }
+  
+  // ----------------------------------------------------------------------------
+  // |  Protected Functions
+  // ----------------------------------------------------------------------------
 
-    public Barcode getBarcode() {
-        return mBarcode;
-    }
-
-    /**
-     * Updates the barcode instance from the detection of the most recent frame.  Invalidates the
-     * relevant portions of the overlay to trigger a redraw.
-     */
-    void updateItem(Barcode barcode) {
-        mBarcode = barcode;
-        postInvalidate();
-    }
-
-    /**
-     * Draws the barcode annotations for position, size, and raw value on the supplied canvas.
-     */
-    @Override
-    public void draw(Canvas canvas) {
-        Barcode barcode = mBarcode;
-        if (barcode == null) {
-            return;
-        }
-
-        // Draws the bounding box around the barcode.
-        RectF rect = new RectF(barcode.getBoundingBox());
-        rect.left = translateX(rect.left);
-        rect.top = translateY(rect.top);
-        rect.right = translateX(rect.right);
-        rect.bottom = translateY(rect.bottom);
-        canvas.drawRect(rect, mRectPaint);
-
-        // Draws a label at the bottom of the barcode indicate the barcode value that was detected.
-        canvas.drawText(barcode.rawValue, rect.left, rect.bottom, mTextPaint);
-    }
+  // ----------------------------------------------------------------------------
+  // |  Private Functions
+  // ----------------------------------------------------------------------------  
 }

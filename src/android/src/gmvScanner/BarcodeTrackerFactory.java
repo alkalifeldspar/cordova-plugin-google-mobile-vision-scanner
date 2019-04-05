@@ -1,46 +1,53 @@
-/*
- * Copyright (C) The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package tl.cordova.google.mobile.vision.scanner;
 
+// ----------------------------------------------------------------------------
+// |  Android Imports
+// ----------------------------------------------------------------------------
 import android.content.Context;
 
-import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
+// ----------------------------------------------------------------------------
+// |  Google Imports
+// ----------------------------------------------------------------------------
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 
-/**
- * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The
- * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
- */
+// ----------------------------------------------------------------------------
+// |  Our Imports
+// ----------------------------------------------------------------------------
+import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
+
 class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
-    private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
-    private Context mContext;
+  // ----------------------------------------------------------------------------
+  // | Public Properties
+  // ----------------------------------------------------------------------------
 
-    public BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> mGraphicOverlay,
-                                 Context mContext) {
-        this.mGraphicOverlay = mGraphicOverlay;
-        this.mContext = mContext;
-    }
+  // ----------------------------------------------------------------------------
+  // | Private Properties
+  // ----------------------------------------------------------------------------
+  private GraphicOverlay<BarcodeGraphic> _GraphicOverlay;
+  private Context                        _Context       ;
 
-    @Override
-    public Tracker<Barcode> create(Barcode barcode) {
-        BarcodeGraphic graphic = new BarcodeGraphic(mGraphicOverlay);
-        return new BarcodeGraphicTracker(mGraphicOverlay, graphic, mContext);
-    }
+  public BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> p_GraphicOverlay, Context p_Context) {
+    this._GraphicOverlay = p_GraphicOverlay;
+    this._Context        = p_Context       ;
+  }
 
+  // ----------------------------------------------------------------------------
+  // |  Public Functions
+  // ----------------------------------------------------------------------------  
+  @Override
+  public Tracker<Barcode> create(Barcode p_Barcode) {
+    BarcodeGraphic graphic = new BarcodeGraphic(_GraphicOverlay);
+
+    return new BarcodeGraphicTracker(_GraphicOverlay, graphic, _Context);
+  }
+
+  // ----------------------------------------------------------------------------
+  // |  Protected Functions
+  // ----------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------------
+  // |  Private Functions
+  // ----------------------------------------------------------------------------
 }
-
