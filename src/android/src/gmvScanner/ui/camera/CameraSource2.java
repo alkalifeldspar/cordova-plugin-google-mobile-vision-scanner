@@ -125,7 +125,7 @@ public class CameraSource2 {
   // ----------------------------------------------------------------------------
   public static class Builder {
     private final Detector<?> _Detector;
-    private CameraSource _CameraSource = new CameraSource();
+    private CameraSource2 _CameraSource = new CameraSource2();
 
     public Builder(Context context, Detector<?> detector) {
       if (context == null) {
@@ -182,7 +182,7 @@ public class CameraSource2 {
       return this;
     }
     
-    public CameraSource build() {
+    public CameraSource2 build() {
       _CameraSource._FrameProcessor = _CameraSource.new FrameProcessingRunnable(_Detector);
       return _CameraSource;
     }
@@ -191,7 +191,7 @@ public class CameraSource2 {
   // ----------------------------------------------------------------------------
   // | Constructor
   // ---------------------------------------------------------------------------- 
-  private CameraSource() { // Constructor is private to force creation using the builder class.
+  private CameraSource2() { // Constructor is private to force creation using the builder class.
   }
 
   // ----------------------------------------------------------------------------
@@ -205,7 +205,7 @@ public class CameraSource2 {
   }
 
   @RequiresPermission(Manifest.permission.CAMERA)
-  public CameraSource start() throws IOException {
+  public CameraSource2 start() throws IOException {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         return this;
@@ -232,7 +232,7 @@ public class CameraSource2 {
   }
 
   @RequiresPermission(Manifest.permission.CAMERA)
-  public CameraSource start(SurfaceHolder p_SurfaceHolder) throws IOException {
+  public CameraSource2 start(SurfaceHolder p_SurfaceHolder) throws IOException {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         return this;
@@ -330,9 +330,9 @@ public class CameraSource2 {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         PictureStartCallback startCallback = new PictureStartCallback();
-        startCallback.mDelegate = p_Shutter;
+        startCallback._Delegate = p_Shutter;
         PictureDoneCallback doneCallback = new PictureDoneCallback();
-        doneCallback.mDelegate = p_Jpeg;
+        doneCallback._Delegate = p_Jpeg;
         _Camera.takePicture(startCallback, null, null, doneCallback);
       }
     }
@@ -388,7 +388,7 @@ public class CameraSource2 {
         CameraAutoFocusCallback autoFocusCallback = null;
         if (p_Callback != null) {
           autoFocusCallback = new CameraAutoFocusCallback();
-          autoFocusCallback.mDelegate = p_Callback;
+          autoFocusCallback._Delegate = p_Callback;
         }
         _Camera.autoFocus(autoFocusCallback);
       }
@@ -414,7 +414,7 @@ public class CameraSource2 {
         CameraAutoFocusMoveCallback autoFocusMoveCallback = null;
         if (p_Callback != null) {
           autoFocusMoveCallback = new CameraAutoFocusMoveCallback();
-          autoFocusMoveCallback.mDelegate = p_Callback;
+          autoFocusMoveCallback._Delegate = p_Callback;
         }
         _Camera.setAutoFocusMoveCallback(autoFocusMoveCallback);
       }
@@ -428,12 +428,12 @@ public class CameraSource2 {
   // ----------------------------------------------------------------------------   
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
-    private AutoFocusMoveCallback mDelegate;
+    private AutoFocusMoveCallback _Delegate;
 
     @Override
     public void onAutoFocusMoving(boolean start, Camera camera) {
-      if (mDelegate != null) {
-        mDelegate.onAutoFocusMoving(start);
+      if (_Delegate != null) {
+        _Delegate.onAutoFocusMoving(start);
       }
     }
   }

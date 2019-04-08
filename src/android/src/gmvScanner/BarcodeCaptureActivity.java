@@ -236,8 +236,8 @@ public final class BarcodeCaptureActivity extends    AppCompatActivity
       }
     }
 
-    CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), barcodeDetector)
-        .setFacing(CameraSource.CAMERA_FACING_BACK)
+    CameraSource2.Builder builder = new CameraSource2.Builder(getApplicationContext(), barcodeDetector)
+        .setFacing(CameraSource2.CAMERA_FACING_BACK)
         .setRequestedPreviewSize(1600, 1024)
         .setRequestedFps(15.0f);
 

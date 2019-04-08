@@ -95,7 +95,7 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void start(CameraSource cameraSource) throws IOException, SecurityException {
+    public void start(CameraSource2 cameraSource) throws IOException, SecurityException {
         if (cameraSource == null) {
             stop();
         }
@@ -109,7 +109,7 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void start(CameraSource cameraSource, GraphicOverlay overlay) throws IOException, SecurityException {
+    public void start(CameraSource2 cameraSource, GraphicOverlay overlay) throws IOException, SecurityException {
         mOverlay = overlay;
         start(cameraSource);
     }
