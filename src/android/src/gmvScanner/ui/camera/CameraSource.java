@@ -189,6 +189,12 @@ public class CameraSource {
   }
 
   // ----------------------------------------------------------------------------
+  // | Constructor
+  // ---------------------------------------------------------------------------- 
+  private CameraSource() { // Constructor is private to force creation using the builder class.
+  }
+
+  // ----------------------------------------------------------------------------
   // | Public Functions
   // ---------------------------------------------------------------------------- 
   public void release() {
@@ -226,14 +232,14 @@ public class CameraSource {
   }
 
   @RequiresPermission(Manifest.permission.CAMERA)
-  public CameraSource start(SurfaceHolder surfaceHolder) throws IOException {
+  public CameraSource start(SurfaceHolder p_SurfaceHolder) throws IOException {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         return this;
       }
 
       _Camera = createCamera();
-      _Camera.setPreviewDisplay(surfaceHolder);
+      _Camera.setPreviewDisplay(p_SurfaceHolder);
       _Camera.startPreview();
 
       _ProcessingThread = new Thread(_FrameProcessor);
@@ -287,7 +293,7 @@ public class CameraSource {
     return _Facing;
   }
 
-  public int doZoom(float scale) {
+  public int doZoom(float p_Scale) {
     synchronized (_CameraLock) {
       if (_Camera == null) {
         return 0;
@@ -303,10 +309,10 @@ public class CameraSource {
 
       currentZoom = parameters.getZoom() + 1;
       float newZoom;
-      if (scale > 1) {
-        newZoom = currentZoom + scale * (maxZoom / 10);
+      if (p_Scale > 1) {
+        newZoom = currentZoom + p_Scale * (maxZoom / 10);
       } else {
-        newZoom = currentZoom * scale;
+        newZoom = currentZoom * p_Scale;
       }
       currentZoom = Math.round(newZoom) - 1;
       if (currentZoom < 0) {
@@ -320,13 +326,13 @@ public class CameraSource {
     }
   }
 
-  public void takePicture(ShutterCallback shutter, PictureCallback jpeg) {
+  public void takePicture(ShutterCallback p_Shutter, PictureCallback p_Jpeg) {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         PictureStartCallback startCallback = new PictureStartCallback();
-        startCallback.mDelegate = shutter;
+        startCallback.mDelegate = p_Shutter;
         PictureDoneCallback doneCallback = new PictureDoneCallback();
-        doneCallback.mDelegate = jpeg;
+        doneCallback.mDelegate = p_Jpeg;
         _Camera.takePicture(startCallback, null, null, doneCallback);
       }
     }
@@ -338,14 +344,14 @@ public class CameraSource {
     return _FocusMode;
   }
 
-  public boolean setFocusMode(@FocusMode String mode) {
+  public boolean setFocusMode(@FocusMode String p_Mode) {
     synchronized (_CameraLock) {
-      if (_Camera != null && mode != null) {
+      if (_Camera != null && p_Mode != null) {
         Camera.Parameters parameters = _Camera.getParameters();
-        if (parameters.getSupportedFocusModes().contains(mode)) {
-          parameters.setFocusMode(mode);
+        if (parameters.getSupportedFocusModes().contains(p_Mode)) {
+          parameters.setFocusMode(p_Mode);
           _Camera.setParameters(parameters);
-          _FocusMode = mode;
+          _FocusMode = p_Mode;
           return true;
         }
       }
@@ -360,14 +366,14 @@ public class CameraSource {
     return _FlashMode;
   }
 
-  public boolean setFlashMode(@FlashMode String mode) {
+  public boolean setFlashMode(@FlashMode String p_Mode) {
     synchronized (_CameraLock) {
-      if (_Camera != null && mode != null) {
+      if (_Camera != null && p_Mode != null) {
         Camera.Parameters parameters = _Camera.getParameters();
-        if (parameters.getSupportedFlashModes().contains(mode)) {
-          parameters.setFlashMode(mode);
+        if (parameters.getSupportedFlashModes().contains(p_Mode)) {
+          parameters.setFlashMode(p_Mode);
           _Camera.setParameters(parameters);
-          _FlashMode = mode;
+          _FlashMode = p_Mode;
           return true;
         }
       }
@@ -376,13 +382,13 @@ public class CameraSource {
     }
   }
 
-  public void autoFocus(@Nullable AutoFocusCallback cb) {
+  public void autoFocus(@Nullable AutoFocusCallback p_Callback) {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         CameraAutoFocusCallback autoFocusCallback = null;
-        if (cb != null) {
+        if (p_Callback != null) {
           autoFocusCallback = new CameraAutoFocusCallback();
-          autoFocusCallback.mDelegate = cb;
+          autoFocusCallback.mDelegate = p_Callback;
         }
         _Camera.autoFocus(autoFocusCallback);
       }
@@ -398,7 +404,7 @@ public class CameraSource {
   }
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-  public boolean setAutoFocusMoveCallback(@Nullable AutoFocusMoveCallback cb) {
+  public boolean setAutoFocusMoveCallback(@Nullable AutoFocusMoveCallback p_Callback) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
       return false;
     }
@@ -406,9 +412,9 @@ public class CameraSource {
     synchronized (_CameraLock) {
       if (_Camera != null) {
         CameraAutoFocusMoveCallback autoFocusMoveCallback = null;
-        if (cb != null) {
+        if (p_Callback != null) {
           autoFocusMoveCallback = new CameraAutoFocusMoveCallback();
-          autoFocusMoveCallback.mDelegate = cb;
+          autoFocusMoveCallback.mDelegate = p_Callback;
         }
         _Camera.setAutoFocusMoveCallback(autoFocusMoveCallback);
       }
@@ -417,50 +423,9 @@ public class CameraSource {
     return true;
   }
 
-  // ==============================================================================================
-  // Private
-  // ==============================================================================================
-  private CameraSource() { // Constructor is private to force creation using the builder class.
-  }
-
-  private class PictureStartCallback implements Camera.ShutterCallback {
-    private ShutterCallback mDelegate;
-
-    @Override
-    public void onShutter() {
-      if (mDelegate != null) {
-        mDelegate.onShutter();
-      }
-    }
-  }
-
-  private class PictureDoneCallback implements Camera.PictureCallback {
-    private PictureCallback mDelegate;
-
-    @Override
-    public void onPictureTaken(byte[] data, Camera camera) {
-      if (mDelegate != null) {
-        mDelegate.onPictureTaken(data);
-      }
-      synchronized (_CameraLock) {
-        if (_Camera != null) {
-          _Camera.startPreview();
-        }
-      }
-    }
-  }
-
-  private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
-    private AutoFocusCallback mDelegate;
-
-    @Override
-    public void onAutoFocus(boolean success, Camera camera) {
-      if (mDelegate != null) {
-        mDelegate.onAutoFocus(success);
-      }
-    }
-  }
-
+  // ----------------------------------------------------------------------------
+  // | Private Functions
+  // ----------------------------------------------------------------------------   
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
   private class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
     private AutoFocusMoveCallback mDelegate;
@@ -532,13 +497,14 @@ public class CameraSource {
 
     camera.setParameters(parameters);
 
+    camera.setPreviewCallbackWithBuffer(new CameraPreviewCallback());
+
     // Four frame buffers are needed for working with the camera:
     //
     // one for the frame that is currently being executed upon in doing detection
     // one for the next pending frame to process immediately upon completing
     // detection
     // two for the frames that the camera uses to populate future preview images
-    camera.setPreviewCallbackWithBuffer(new CameraPreviewCallback());
     camera.addCallbackBuffer(createPreviewBuffer(_PreviewSize));
     camera.addCallbackBuffer(createPreviewBuffer(_PreviewSize));
     camera.addCallbackBuffer(createPreviewBuffer(_PreviewSize));
@@ -547,52 +513,25 @@ public class CameraSource {
     return camera;
   }
 
-  /**
-   * Gets the id for the camera specified by the direction it is facing. Returns
-   * -1 if no such camera was found.
-   *
-   * @param facing the desired camera (front-facing or rear-facing)
-   */
-  private static int getIdForRequestedCamera(int facing) {
+  private static int getIdForRequestedCamera(int p_Facing) {
     CameraInfo cameraInfo = new CameraInfo();
     for (int i = 0; i < Camera.getNumberOfCameras(); ++i) {
       Camera.getCameraInfo(i, cameraInfo);
-      if (cameraInfo.facing == facing) {
+      if (cameraInfo.facing == p_Facing) {
         return i;
       }
     }
     return -1;
   }
 
-  /**
-   * Selects the most suitable preview and picture size, given the desired width
-   * and height.
-   * <p/>
-   * Even though we may only need the preview size, it's necessary to find both
-   * the preview size and the picture size of the camera together, because these
-   * need to have the same aspect ratio. On some hardware, if you would only set
-   * the preview size, you will get a distorted image.
-   *
-   * @param camera        the camera to select a preview size from
-   * @param desiredWidth  the desired width of the camera preview frames
-   * @param desiredHeight the desired height of the camera preview frames
-   * @return the selected preview and picture size pair
-   */
-  private static SizePair selectSizePair(Camera camera, int desiredWidth, int desiredHeight) {
-    List<SizePair> validPreviewSizes = generateValidPreviewSizeList(camera);
+  private static SizePair selectSizePair(Camera p_Camera, int p_DesiredWidth, int p_DesiredHeight) {
+    List<SizePair> validPreviewSizes = generateValidPreviewSizeList(p_Camera);
 
-    // The method for selecting the best size is to minimize the sum of the
-    // differences between
-    // the desired values and the actual values for width and height. This is
-    // certainly not the
-    // only way to select the best size, but it provides a decent tradeoff between
-    // using the
-    // closest aspect ratio vs. using the closest pixel area.
     SizePair selectedPair = null;
     int minDiff = Integer.MAX_VALUE;
     for (SizePair sizePair : validPreviewSizes) {
       Size size = sizePair.previewSize();
-      int diff = Math.abs(size.getWidth() - desiredWidth) + Math.abs(size.getHeight() - desiredHeight);
+      int diff = Math.abs(size.getWidth() - p_DesiredWidth) + Math.abs(size.getHeight() - p_DesiredHeight);
       if (diff < minDiff) {
         selectedPair = sizePair;
         minDiff = diff;
@@ -602,58 +541,13 @@ public class CameraSource {
     return selectedPair;
   }
 
-  /**
-   * Stores a preview size and a corresponding same-aspect-ratio picture size. To
-   * avoid distorted preview images on some devices, the picture size must be set
-   * to a size that is the same aspect ratio as the preview size or the preview
-   * may end up being distorted. If the picture size is null, then there is no
-   * picture size with the same aspect ratio as the preview size.
-   */
-  private static class SizePair {
-    private Size mPreview;
-    private Size mPicture;
-
-    public SizePair(android.hardware.Camera.Size previewSize, android.hardware.Camera.Size pictureSize) {
-      mPreview = new Size(previewSize.width, previewSize.height);
-      if (pictureSize != null) {
-        mPicture = new Size(pictureSize.width, pictureSize.height);
-      }
-    }
-
-    public Size previewSize() {
-      return mPreview;
-    }
-
-    @SuppressWarnings("unused")
-    public Size pictureSize() {
-      return mPicture;
-    }
-  }
-
-  /**
-   * Generates a list of acceptable preview sizes. Preview sizes are not
-   * acceptable if there is not a corresponding picture size of the same aspect
-   * ratio. If there is a corresponding picture size of the same aspect ratio, the
-   * picture size is paired up with the preview size.
-   * <p/>
-   * This is necessary because even if we don't use still pictures, the still
-   * picture size must be set to a size that is the same aspect ratio as the
-   * preview size we choose. Otherwise, the preview images may be distorted on
-   * some devices.
-   */
-  private static List<SizePair> generateValidPreviewSizeList(Camera camera) {
-    Camera.Parameters parameters = camera.getParameters();
+  private static List<SizePair> generateValidPreviewSizeList(Camera p_Camera) {
+    Camera.Parameters parameters = p_Camera.getParameters();
     List<android.hardware.Camera.Size> supportedPreviewSizes = parameters.getSupportedPreviewSizes();
     List<android.hardware.Camera.Size> supportedPictureSizes = parameters.getSupportedPictureSizes();
     List<SizePair> validPreviewSizes = new ArrayList<>();
     for (android.hardware.Camera.Size previewSize : supportedPreviewSizes) {
       float previewAspectRatio = (float) previewSize.width / (float) previewSize.height;
-
-      // By looping through the picture sizes in order, we favor the higher
-      // resolutions.
-      // We choose the highest resolution in order to support taking the full
-      // resolution
-      // picture later.
       for (android.hardware.Camera.Size pictureSize : supportedPictureSizes) {
         float pictureAspectRatio = (float) pictureSize.width / (float) pictureSize.height;
         if (Math.abs(previewAspectRatio - pictureAspectRatio) < ASPECT_RATIO_TOLERANCE) {
@@ -662,12 +556,7 @@ public class CameraSource {
         }
       }
     }
-
-    // If there are no picture sizes with the same aspect ratio as any preview
-    // sizes, allow all
-    // of the preview sizes and hope that the camera can handle it. Probably
-    // unlikely, but we
-    // still account for it.
+    
     if (validPreviewSizes.size() == 0) {
       Log.w(TAG, "No preview sizes have a corresponding same-aspect-ratio picture size");
       for (android.hardware.Camera.Size previewSize : supportedPreviewSizes) {
@@ -679,33 +568,12 @@ public class CameraSource {
     return validPreviewSizes;
   }
 
-  /**
-   * Selects the most suitable preview frames per second range, given the desired
-   * frames per second.
-   *
-   * @param camera            the camera to select a frames per second range from
-   * @param desiredPreviewFps the desired frames per second for the camera preview
-   *                          frames
-   * @return the selected preview frames per second range
-   */
-  private int[] selectPreviewFpsRange(Camera camera, float desiredPreviewFps) {
-    // The camera API uses integers scaled by a factor of 1000 instead of
-    // floating-point frame
-    // rates.
-    int desiredPreviewFpsScaled = (int) (desiredPreviewFps * 1000.0f);
+  private int[] selectPreviewFpsRange(Camera p_Camera, float p_DesiredPreviewFps) {
+    int desiredPreviewFpsScaled = (int) (p_DesiredPreviewFps * 1000.0f);
 
-    // The method for selecting the best range is to minimize the sum of the
-    // differences between
-    // the desired value and the upper and lower bounds of the range. This may
-    // select a range
-    // that the desired value is outside of, but this is often preferred. For
-    // example, if the
-    // desired frame rate is 29.97, the range (30, 30) is probably more desirable
-    // than the
-    // range (15, 30).
     int[] selectedFpsRange = null;
     int minDiff = Integer.MAX_VALUE;
-    List<int[]> previewFpsRangeList = camera.getParameters().getSupportedPreviewFpsRange();
+    List<int[]> previewFpsRangeList = p_Camera.getParameters().getSupportedPreviewFpsRange();
     for (int[] range : previewFpsRangeList) {
       int deltaMin = desiredPreviewFpsScaled - range[Camera.Parameters.PREVIEW_FPS_MIN_INDEX];
       int deltaMax = desiredPreviewFpsScaled - range[Camera.Parameters.PREVIEW_FPS_MAX_INDEX];
@@ -718,15 +586,7 @@ public class CameraSource {
     return selectedFpsRange;
   }
 
-  /**
-   * Calculates the correct rotation for the given camera id and sets the rotation
-   * in the parameters. It also sets the camera's display orientation and
-   * rotation.
-   *
-   * @param parameters the camera parameters for which to set the rotation
-   * @param cameraId   the camera id to set rotation based on
-   */
-  private void setRotation(Camera camera, Camera.Parameters parameters, int cameraId) {
+  private void setRotation(Camera p_Camera, Camera.Parameters p_Parameters, int p_CameraId) {
     WindowManager windowManager = (WindowManager) _Context.getSystemService(Context.WINDOW_SERVICE);
     int degrees = 0;
     int rotation = windowManager.getDefaultDisplay().getRotation();
@@ -748,7 +608,7 @@ public class CameraSource {
     }
 
     CameraInfo cameraInfo = new CameraInfo();
-    Camera.getCameraInfo(cameraId, cameraInfo);
+    Camera.getCameraInfo(p_CameraId, cameraInfo);
 
     int angle;
     int displayAngle;
@@ -763,34 +623,18 @@ public class CameraSource {
     // This corresponds to the rotation constants in {@link Frame}.
     _Rotation = angle / 90;
 
-    camera.setDisplayOrientation(displayAngle);
-    parameters.setRotation(angle);
+    p_Camera.setDisplayOrientation(displayAngle);
+    p_Parameters.setRotation(angle);
   }
 
-  /**
-   * Creates one buffer for the camera preview callback. The size of the buffer is
-   * based off of the camera preview size and the format of the camera image.
-   *
-   * @return a new preview buffer of the appropriate size for the current camera
-   *         settings
-   */
-  private byte[] createPreviewBuffer(Size previewSize) {
+  private byte[] createPreviewBuffer(Size p_PreviewSize) {
     int bitsPerPixel = ImageFormat.getBitsPerPixel(ImageFormat.NV21);
-    long sizeInBits = previewSize.getHeight() * previewSize.getWidth() * bitsPerPixel;
+    long sizeInBits = p_PreviewSize.getHeight() * p_PreviewSize.getWidth() * bitsPerPixel;
     int bufferSize = (int) Math.ceil(sizeInBits / 8.0d) + 1;
 
-    //
-    // NOTICE: This code only works when using play services v. 8.1 or higher.
-    //
-
-    // Creating the byte array this way and wrapping it, as opposed to using
-    // .allocate(),
-    // should guarantee that there will be an array to work with.
     byte[] byteArray = new byte[bufferSize];
     ByteBuffer buffer = ByteBuffer.wrap(byteArray);
     if (!buffer.hasArray() || (buffer.array() != byteArray)) {
-      // I don't think that this will ever happen. But if it does, then we wouldn't be
-      // passing the preview content to the underlying detector later.
       throw new IllegalStateException("Failed to create valid buffer for camera source.");
     }
 
@@ -798,17 +642,72 @@ public class CameraSource {
     return byteArray;
   }
 
-  // ==============================================================================================
-  // Frame processing
-  // ==============================================================================================
+  // ----------------------------------------------------------------------------
+  // | Helper Classes
+  // ----------------------------------------------------------------------------
+  private class PictureStartCallback implements Camera.ShutterCallback {
+    private ShutterCallback _Delegate;
 
-  /**
-   * Called when the camera has a new preview frame.
-   */
+    @Override
+    public void onShutter() {
+      if (_Delegate != null) {
+        _Delegate.onShutter();
+      }
+    }
+  }
+
+  private class PictureDoneCallback implements Camera.PictureCallback {
+    private PictureCallback _Delegate;
+
+    @Override
+    public void onPictureTaken(byte[] p_Data, Camera p_Camera) {
+      if (_Delegate != null) {
+        _Delegate.onPictureTaken(p_Data);
+      }
+      synchronized (_CameraLock) {
+        if (_Camera != null) {
+          _Camera.startPreview();
+        }
+      }
+    }
+  }
+
+  private class CameraAutoFocusCallback implements Camera.AutoFocusCallback {
+    private AutoFocusCallback _Delegate;
+
+    @Override
+    public void onAutoFocus(boolean p_Success, Camera p_Camera) {
+      if (_Delegate != null) {
+        _Delegate.onAutoFocus(p_Success);
+      }
+    }
+  }
+
+  private static class SizePair {
+    private Size _Preview;
+    private Size _Picture;
+
+    public SizePair(android.hardware.Camera.Size p_PreviewSize, android.hardware.Camera.Size p_PictureSize) {
+      _Preview = new Size(p_PreviewSize.width, p_PreviewSize.height);
+      if (p_PictureSize != null) {
+        _Picture = new Size(p_PictureSize.width, p_PictureSize.height);
+      }
+    }
+
+    public Size previewSize() {
+      return _Preview;
+    }
+
+    @SuppressWarnings("unused")
+    public Size pictureSize() {
+      return _Picture;
+    }
+  }  
+
   private class CameraPreviewCallback implements Camera.PreviewCallback {
     @Override
-    public void onPreviewFrame(byte[] data, Camera camera) {
-      _FrameProcessor.setNextFrame(data, camera);
+    public void onPreviewFrame(byte[] p_Data, Camera p_Camera) {
+      _FrameProcessor.setNextFrame(p_Data, p_Camera);
     }
   }
 
@@ -826,20 +725,20 @@ public class CameraSource {
    */
   private class FrameProcessingRunnable implements Runnable {
     private Detector<?> _Detector;
-    private long mStartTimeMillis = SystemClock.elapsedRealtime();
+    private long _StartTimeMillis = SystemClock.elapsedRealtime();
 
     // This lock guards all of the member variables below.
-    private final Object mLock = new Object();
-    private boolean mActive = true;
+    private final Object _Lock = new Object();
+    private boolean _Active = true;
 
     // These pending variables hold the state associated with the new frame awaiting
     // processing.
-    private long mPendingTimeMillis;
-    private int mPendingFrameId = 0;
-    private ByteBuffer mPendingFrameData;
+    private long _PendingTimeMillis;
+    private int _PendingFrameId = 0;
+    private ByteBuffer _PendingFrameData;
 
-    FrameProcessingRunnable(Detector<?> detector) {
-      _Detector = detector;
+    FrameProcessingRunnable(Detector<?> p_Detector) {
+      _Detector = p_Detector;
     }
 
     /**
@@ -858,10 +757,10 @@ public class CameraSource {
      * Marks the runnable as active/not active. Signals any blocked threads to
      * continue.
      */
-    void setActive(boolean active) {
-      synchronized (mLock) {
-        mActive = active;
-        mLock.notifyAll();
+    void setActive(boolean p_Active) {
+      synchronized (_Lock) {
+        _Active = p_Active;
+        _Lock.notifyAll();
       }
     }
 
@@ -870,15 +769,15 @@ public class CameraSource {
      * frame buffer (if present) back to the camera, and keeps a pending reference
      * to the frame data for future use.
      */
-    void setNextFrame(byte[] data, Camera camera) {
-      synchronized (mLock) {
-        if (mPendingFrameData != null) {
-          camera.addCallbackBuffer(mPendingFrameData.array());
-          mPendingFrameData = null;
+    void setNextFrame(byte[] p_Data, Camera p_Camera) {
+      synchronized (_Lock) {
+        if (_PendingFrameData != null) {
+          p_Camera.addCallbackBuffer(_PendingFrameData.array());
+          _PendingFrameData = null;
         }
 
-        if (!_BytesToByteBuffer.containsKey(data)) {
-          Log.d(TAG, "Skipping frame.  Could not find ByteBuffer associated with the image " + "data from the camera.");
+        if (!_BytesToByteBuffer.containsKey(p_Data)) {
+          Log.d(TAG, "Skipping frame. Could not find ByteBuffer associated with the image data from the camera.");
           return;
         }
 
@@ -886,12 +785,12 @@ public class CameraSource {
         // some
         // idea of the timing of frames received and when frames were dropped along the
         // way.
-        mPendingTimeMillis = SystemClock.elapsedRealtime() - mStartTimeMillis;
-        mPendingFrameId++;
-        mPendingFrameData = _BytesToByteBuffer.get(data);
+        _PendingTimeMillis = SystemClock.elapsedRealtime() - _StartTimeMillis;
+        _PendingFrameId++;
+        _PendingFrameData = _BytesToByteBuffer.get(p_Data);
 
         // Notify the processor thread if it is waiting on the next frame (see below).
-        mLock.notifyAll();
+        _Lock.notifyAll();
       }
     }
 
@@ -915,19 +814,19 @@ public class CameraSource {
       ByteBuffer data;
 
       while (true) {
-        synchronized (mLock) {
-          while (mActive && (mPendingFrameData == null)) {
+        synchronized (_Lock) {
+          while (_Active && (_PendingFrameData == null)) {
             try {
               // Wait for the next frame to be received from the camera, since we
               // don't have it yet.
-              mLock.wait();
+              _Lock.wait();
             } catch (InterruptedException e) {
               Log.d(TAG, "Frame processing loop terminated.", e);
               return;
             }
           }
 
-          if (!mActive) {
+          if (!_Active) {
             // Exit the loop once this camera source is stopped or released. We check
             // this here, immediately after the wait() above, to handle the case where
             // setActive(false) had been called, triggering the termination of this
@@ -936,14 +835,14 @@ public class CameraSource {
           }
 
           outputFrame = new Frame.Builder()
-              .setImageData(mPendingFrameData, _PreviewSize.getWidth(), _PreviewSize.getHeight(), ImageFormat.NV21)
-              .setId(mPendingFrameId).setTimestampMillis(mPendingTimeMillis).setRotation(_Rotation).build();
+              .setImageData(_PendingFrameData, _PreviewSize.getWidth(), _PreviewSize.getHeight(), ImageFormat.NV21)
+              .setId(_PendingFrameId).setTimestampMillis(_PendingTimeMillis).setRotation(_Rotation).build();
 
           // Hold onto the frame data locally, so that we can use this for detection
-          // below. We need to clear mPendingFrameData to ensure that this buffer isn't
+          // below. We need to clear _PendingFrameData to ensure that this buffer isn't
           // recycled back to the camera before we are done using that data.
-          data = mPendingFrameData;
-          mPendingFrameData = null;
+          data = _PendingFrameData;
+          _PendingFrameData = null;
         }
 
         // The code below needs to run outside of synchronization, because this will
