@@ -91,7 +91,7 @@
         <source-file src="src/android/src/gmvScanner/SecondaryActivity.java"
                      target-dir="src/com/dealrinc/gmvScanner"/>
 
-        <source-file src="src/android/src/gmvScanner/ui/camera/CameraSource.java"
+        <source-file src="src/android/src/gmvScanner/ui/camera/CameraSource2.java"
                      target-dir="src/com/dealrinc/gmvScanner/ui/camera"/>
         <source-file src="src/android/src/gmvScanner/ui/camera/CameraSourcePreview.java"
                      target-dir="src/com/dealrinc/gmvScanner/ui/camera"/>

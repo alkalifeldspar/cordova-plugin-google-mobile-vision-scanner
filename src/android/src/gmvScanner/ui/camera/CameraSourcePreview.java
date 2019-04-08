@@ -43,7 +43,7 @@ public class CameraSourcePreview extends ViewGroup {
     private Button mTorchButton;
     private boolean mStartRequested;
     private boolean mSurfaceAvailable;
-    private CameraSource mCameraSource;
+    private CameraSource2 mCameraSource;
     private boolean mFlashState = false;
 
     public double ViewFinderWidth = .5;

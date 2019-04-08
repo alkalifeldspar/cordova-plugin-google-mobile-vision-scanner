@@ -44,7 +44,7 @@ import java.util.Map;
 
 // The CameraSource send the preview frames to the barcode detector.
 @SuppressWarnings("deprecation")
-public class CameraSource {
+public class CameraSource2 {
   // ----------------------------------------------------------------------------
   // | Public Properties
   // ----------------------------------------------------------------------------

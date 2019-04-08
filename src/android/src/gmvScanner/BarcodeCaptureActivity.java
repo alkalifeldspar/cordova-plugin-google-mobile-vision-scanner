@@ -50,7 +50,7 @@ import java.io.IOException;
 // ----------------------------------------------------------------------------
 // |  Our Imports
 // ----------------------------------------------------------------------------
-import tl.cordova.google.mobile.vision.scanner.ui.camera.CameraSource;
+import tl.cordova.google.mobile.vision.scanner.ui.camera.CameraSource2;
 import tl.cordova.google.mobile.vision.scanner.ui.camera.CameraSourcePreview;
 import tl.cordova.google.mobile.vision.scanner.ui.camera.GraphicOverlay;
 
@@ -71,7 +71,7 @@ public final class BarcodeCaptureActivity extends    AppCompatActivity
   private static final int    RC_HANDLE_GMS         = 9001            ;
   private static final int    RC_HANDLE_CAMERA_PERM = 2               ;
 
-  private CameraSource                   _CameraSource        ;
+  private CameraSource2                   _CameraSource        ;
   private CameraSourcePreview            _Preview             ;
   private GraphicOverlay<BarcodeGraphic> _GraphicOverlay      ;
   private ScaleGestureDetector           _ScaleGestureDetector;
