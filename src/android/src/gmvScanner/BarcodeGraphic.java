@@ -35,7 +35,6 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
   private          Paint   _TextPaint;
   private volatile Barcode _Barcode  ;
 
-
   BarcodeGraphic(GraphicOverlay overlay) {
     super(overlay);
 
@@ -79,7 +78,6 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
       return;
     }
 
-    // Draws the bounding box around the barcode.
     RectF rect = new RectF(barcode.getBoundingBox());
     rect.left = translateX(rect.left);
     rect.top = translateY(rect.top);
@@ -87,8 +85,6 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
     rect.bottom = translateY(rect.bottom);
     canvas.drawRect(rect, _RectPaint);
 
-    // Draws a label at the bottom of the barcode indicate the barcode value that
-    // was detected.
     canvas.drawText(barcode.rawValue, rect.left, rect.bottom, _TextPaint);
   }
   

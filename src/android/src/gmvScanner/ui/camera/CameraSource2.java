@@ -157,13 +157,6 @@ public class CameraSource2 {
       return this;
     }
 
-    /**
-     * Sets the desired width and height of the camera frames in pixels. If the
-     * exact desired values are not available options, the best matching available
-     * options are selected. Also, we try to select a preview size which corresponds
-     * to the aspect ratio of an associated full picture size, if applicable.
-     * Default: 1024x768.
-     */
     public Builder setRequestedPreviewSize(int width, int height) {
       final int MAX = 1000000;
       if ((width <= 0) || (width > MAX) || (height <= 0) || (height > MAX)) {
