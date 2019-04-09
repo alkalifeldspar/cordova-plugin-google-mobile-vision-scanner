@@ -71,7 +71,7 @@ public final class BarcodeCaptureActivity extends    AppCompatActivity
   private static final int    RC_HANDLE_GMS         = 9001            ;
   private static final int    RC_HANDLE_CAMERA_PERM = 2               ;
 
-  private CameraSource2                   _CameraSource        ;
+  private CameraSource2                  _CameraSource        ;
   private CameraSourcePreview            _Preview             ;
   private GraphicOverlay<BarcodeGraphic> _GraphicOverlay      ;
   private ScaleGestureDetector           _ScaleGestureDetector;
@@ -112,8 +112,6 @@ public final class BarcodeCaptureActivity extends    AppCompatActivity
     ViewFinderWidth = getIntent().getDoubleExtra("ViewFinderWidth", .5);
     ViewFinderHeight = getIntent().getDoubleExtra("ViewFinderHeight", .7);
 
-    // Check for the camera permission before accessing the camera. If the
-    // permission is not granted yet, request permission.
     int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
     if (rc == PackageManager.PERMISSION_GRANTED) {
       createCameraSource(true, false);
@@ -129,7 +127,6 @@ public final class BarcodeCaptureActivity extends    AppCompatActivity
   @Override
   public boolean onTouchEvent(MotionEvent e) {
     boolean b = _ScaleGestureDetector.onTouchEvent(e);
-
     boolean c = _GestureDetector.onTouchEvent(e);
 
     return b || c || super.onTouchEvent(e);
