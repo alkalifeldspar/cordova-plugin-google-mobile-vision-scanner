@@ -194,6 +194,8 @@ public class CameraSourcePreview extends ViewGroup {
     int actualWidth = (int) (layoutWidth * ViewFinderWidth);
     int actualHeight = (int) (layoutHeight * ViewFinderHeight);
 
+    _ViewFinderView.layout(0,0,layoutWidth,layoutHeight);
+
     // _ViewFinderView.layout(
     //   layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 
     //   layoutWidth / 2 + actualWidth / 2, layoutHeight / 2 + actualHeight / 2

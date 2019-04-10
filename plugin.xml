@@ -44,8 +44,8 @@
                     android:name="com.google.android.gms.vision.DEPENDENCIES"
                     android:value="barcode" />
 
-            <activity android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
-            <activity android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
+            <activity android:screenOrientation="portrait" android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
+            <activity android:screenOrientation="portrait" android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
         </config-file>
 
         <config-file parent="/*" target="AndroidManifest.xml">
@@ -59,8 +59,8 @@
                     android:name="com.google.android.gms.vision.DEPENDENCIES"
                     android:value="barcode" />
 
-            <activity android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
-            <activity android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
+            <activity android:screenOrientation="portrait" android:label="@string/title_activity_main" android:name="tl.cordova.google.mobile.vision.scanner.SecondaryActivity"/>
+            <activity android:screenOrientation="portrait" android:label="Read Barcode" android:name="tl.cordova.google.mobile.vision.scanner.BarcodeCaptureActivity" android:theme="@style/Theme.AppCompat.Light"/>
         </config-file>
 
         <config-file target="res/values/strings.xml" parent="/*">
