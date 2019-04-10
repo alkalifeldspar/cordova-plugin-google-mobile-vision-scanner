@@ -32,8 +32,8 @@ public class CameraSourcePreview extends ViewGroup {
   // ----------------------------------------------------------------------------
   // | Public Properties
   // ----------------------------------------------------------------------------
-  public double ViewFinderWidth  = .5;
-  public double ViewFinderHeight = .7;
+  public double ViewFinderWidth  = 3; //.5;
+  public double ViewFinderHeight = 3; //.7;
 
   // ----------------------------------------------------------------------------
   // | Private Properties
