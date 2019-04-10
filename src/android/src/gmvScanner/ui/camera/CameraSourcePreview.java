@@ -62,7 +62,7 @@ public class CameraSourcePreview extends ViewGroup {
 
     _ViewFinderView = new View(_Context);
     _ViewFinderView.setBackgroundResource(getResources().getIdentifier("rounded_rectangle", "drawable", _Context.getPackageName()));
-    _ViewFinderView.layout(0, 0, 500, 500);
+    //_ViewFinderView.layout(0, 0, 500, 500);
     addView(_ViewFinderView);
 
     _TorchButton = new Button(_Context);
@@ -194,7 +194,7 @@ public class CameraSourcePreview extends ViewGroup {
     int actualWidth = (int) (layoutWidth * ViewFinderWidth);
     int actualHeight = (int) (layoutHeight * ViewFinderHeight);
 
-    _ViewFinderView.layout(0,0,layoutWidth,layoutHeight);
+    _ViewFinderView.layout(10, 10, layoutWidth-10, layoutHeight-10);
 
     // _ViewFinderView.layout(
     //   layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 
