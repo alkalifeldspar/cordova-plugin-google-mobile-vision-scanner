@@ -251,12 +251,21 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   
   UILabel* verticalLine = [[UILabel alloc] init];
 
-  verticalLine.frame = CGRectMake(screenWidth/2, 5, 2, screenHeight-10);
+  verticalLine.frame = CGRectMake(screenWidth/2, 5, 1, screenHeight-10);
   verticalLine.layer.masksToBounds = NO;
   verticalLine.layer.cornerRadius = 0;
   verticalLine.userInteractionEnabled = YES;
-  verticalLine.layer.borderColor = [UIColor whiteColor].CGColor;
-  verticalLine.layer.borderWidth = 1.0;
+  verticalLine.layer.borderColor = [UIColor redColor].CGColor;
+  verticalLine.layer.borderWidth = 0.5;
+
+  UILabel* horizontalLine = [[UILabel alloc] init];
+
+  horizontalLine.frame = CGRectMake(5, screenHeight/2, screenWidth-10, 1);
+  horizontalLine.layer.masksToBounds = NO;
+  horizontalLine.layer.cornerRadius = 0;
+  horizontalLine.userInteractionEnabled = YES;
+  horizontalLine.layer.borderColor = [UIColor redColor].CGColor;
+  horizontalLine.layer.borderWidth = 0.5;
 
   // UILabel* _label1 = [[UILabel alloc] init];
 
@@ -271,6 +280,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   UITapGestureRecognizer* tapScanner = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusAtPoint:)];
   //[_label1 addGestureRecognizer:tapScanner];
   [verticalLine addGestureRecognizer:tapScanner];
+  [horizontalLine addGestureRecognizer:tapScanner];
   
   CGFloat buttonSize = 45.0;
   
@@ -325,6 +335,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   
   // [self.view addSubview:_label1];
   [self.view addSubview:verticalLine];
+  [self.view addSubview:horizontalLine];  
   
   self.imageView = [[UIImageView alloc] initWithImage:nil];
   
