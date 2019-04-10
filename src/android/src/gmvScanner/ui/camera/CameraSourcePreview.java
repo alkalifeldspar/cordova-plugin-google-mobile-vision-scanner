@@ -62,12 +62,11 @@ public class CameraSourcePreview extends ViewGroup {
 
     _ViewFinderView = new View(_Context);
     _ViewFinderView.setBackgroundResource(getResources().getIdentifier("rounded_rectangle", "drawable", _Context.getPackageName()));
-    _ViewFinderView.layout(0, 0, 1, 500);
+    //_ViewFinderView.layout(0, 0, 1, 500);
     addView(_ViewFinderView);
 
     _TorchButton = new Button(_Context);
-    _TorchButton
-        .setBackgroundResource(getResources().getIdentifier("torch_inactive", "drawable", _Context.getPackageName()));
+    _TorchButton.setBackgroundResource(getResources().getIdentifier("torch_inactive", "drawable", _Context.getPackageName()));
     _TorchButton.layout(0, 0, dpToPx(45), dpToPx(45));
     _TorchButton.setMaxWidth(50);
     _TorchButton.setRotation(90);
@@ -195,10 +194,10 @@ public class CameraSourcePreview extends ViewGroup {
     int actualWidth = (int) (layoutWidth * ViewFinderWidth);
     int actualHeight = (int) (layoutHeight * ViewFinderHeight);
 
-    _ViewFinderView.layout(
-      layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 
-      layoutWidth / 2 + actualWidth / 2, layoutHeight / 2 + actualHeight / 2
-    );
+    // _ViewFinderView.layout(
+    //   layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 
+    //   layoutWidth / 2 + actualWidth / 2, layoutHeight / 2 + actualHeight / 2
+    // );
 
     int buttonSize = dpToPx(45);
     int torchLeft = (int) layoutWidth / 2 + actualWidth / 2 + (layoutWidth - (layoutWidth / 2 + actualWidth / 2)) / 2 - buttonSize / 2;

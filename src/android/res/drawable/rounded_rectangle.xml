@@ -4,5 +4,12 @@
   <stroke 
     android:width="1dp" 
     android:color="#FFFFFF" />
-  <size android:height="2dp" />
+  <size android:height="2dp" android:width="fill_parent" />
+</shape>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="line">
+  <stroke 
+    android:width="1dp" 
+    android:color="#FFFFFF" />
+  <size android:heigh="fill_parent" android:width="2dp" />
 </shape>
