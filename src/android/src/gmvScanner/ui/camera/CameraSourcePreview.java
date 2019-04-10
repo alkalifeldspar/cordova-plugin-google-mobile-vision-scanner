@@ -207,12 +207,9 @@ public class CameraSourcePreview extends ViewGroup {
     _HorizontalLine.layout(10, 10, layoutWidth-10, layoutHeight-10);
 
     
-    //int xOffset = (layoutHeight - layoutWidth);
+    int xOffset = (layoutHeight - layoutWidth) * -1;
 
-    _VerticalLine.layout(10, 10, layoutWidth-10, layoutHeight-10);
-
-
-    //_VerticalLine.layout(((layoutHeight-layoutWidth)/2)*-1, 10, layoutHeight, layoutHeight-10);
+    _VerticalLine.layout(xOffset, 10, layoutHeight, layoutHeight-10);
 
     // _ViewFinderView.layout(
     //   layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 

@@ -1,4 +1,4 @@
-<!-- <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
     android:fromDegrees="90"
     android:toDegrees="90"
     android:pivotX="50%"
@@ -7,8 +7,4 @@
      <stroke android:width="1dp" android:color="#FFFFFF" />
      <size android:height="2dp"/>
   </shape>
-</rotate> -->
-
-<View
-    android:layout_width="1dp"
-    android:background="#FF0000FF" />
+</rotate>
