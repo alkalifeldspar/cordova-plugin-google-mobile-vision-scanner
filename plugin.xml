@@ -105,8 +105,9 @@
 
         <resource-file src="src/android/res/drawable/flashlight.png"
                        target="res/drawable/flashlight.png"/>
-        <resource-file src="src/android/res/drawable/rounded_rectangle.xml"
-                       target="res/drawable/rounded_rectangle.xml"/>
+        <resource-file src="src/android/res/drawable/rounded_rectangle.xml" target="res/drawable/rounded_rectangle.xml"/>
+        <resource-file src="src/android/res/drawable/horizontal_line.xml" target="res/drawable/horizontal_line.xml"/>
+        <resource-file src="src/android/res/drawable/vertical_line.xml" target="res/drawable/vertical_line.xml"/>
         <resource-file src="src/android/res/drawable/torch_active.xml"
                        target="res/drawable/torch_active.xml"/>
         <resource-file src="src/android/res/drawable/torch_inactive.xml"

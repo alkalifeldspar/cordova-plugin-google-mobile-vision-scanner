@@ -43,6 +43,8 @@ public class CameraSourcePreview extends ViewGroup {
   private Context        _Context                 ;
   private SurfaceView    _SurfaceView             ;
   private View           _ViewFinderView          ;
+  private View           _VerticalLine            ;
+  private View           _HorizontalLine          ;
   private Button         _TorchButton             ;
   private boolean        _StartRequested          ;
   private boolean        _SurfaceAvailable        ;
@@ -60,10 +62,18 @@ public class CameraSourcePreview extends ViewGroup {
     _SurfaceView.getHolder().addCallback(new SurfaceCallback());
     addView(_SurfaceView);
 
-    _ViewFinderView = new View(_Context);
-    _ViewFinderView.setBackgroundResource(getResources().getIdentifier("rounded_rectangle", "drawable", _Context.getPackageName()));
+    //_ViewFinderView = new View(_Context);
+    //_ViewFinderView.setBackgroundResource(getResources().getIdentifier("rounded_rectangle", "drawable", _Context.getPackageName()));
     //_ViewFinderView.layout(0, 0, 500, 500);
-    addView(_ViewFinderView);
+    //addView(_ViewFinderView);
+
+    _HorizontalLine = new View(_Context);
+    _HorizontalLine.setBackgroundResource(getResources().getIdentifier("horizontal_line", "drawable", _Context.getPackageName()));
+    addView(_HorizontalLine);
+
+    _VerticalLine = new View(_Context);
+    _VerticalLine.setBackgroundResource(getResources().getIdentifier("vertical_line", "drawable", _Context.getPackageName()));
+    addView(_VerticalLine);
 
     _TorchButton = new Button(_Context);
     _TorchButton.setBackgroundResource(getResources().getIdentifier("torch_inactive", "drawable", _Context.getPackageName()));
@@ -194,7 +204,8 @@ public class CameraSourcePreview extends ViewGroup {
     int actualWidth = (int) (layoutWidth * ViewFinderWidth);
     int actualHeight = (int) (layoutHeight * ViewFinderHeight);
 
-    _ViewFinderView.layout(10, 10, layoutHeight-10, layoutHeight-10);
+    _HorizontalLine.layout(10, 10, layoutWidth-10, layoutHeight-10);
+    _VerticalLine.layout(10, 10, layoutWidth-10, layoutHeight-10);
 
     // _ViewFinderView.layout(
     //   layoutWidth / 2 - actualWidth / 2, layoutHeight / 2 - actualHeight / 2, 
